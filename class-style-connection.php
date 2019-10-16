@@ -13,9 +13,6 @@ class StyleConnectionResolver extends WPGraphQL\Data\Connection\AbstractConnecti
 
   public function get_query()
   {
-    // $styles = wp_styles()->registered;
-    // wp_send_json($styles);
-    // return $styles;
 
     $styles = [];
 
@@ -27,13 +24,6 @@ class StyleConnectionResolver extends WPGraphQL\Data\Connection\AbstractConnecti
     }
 
     return $styles;
-
-    // return [
-    //   'colors' => [
-    //     'handle' => 'colors',
-    //     'src' => 'colors.css',
-    //   ]
-    // ];
   }
 
   public function should_execute()

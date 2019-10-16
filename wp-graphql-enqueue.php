@@ -32,15 +32,15 @@ function register_enqueue()
     'fields' => [
       'handle' => [
         'type' => 'String',
-        'description' => __('Handle name', 'wp-graphql-enqueue'),
+        'description' => __('The style\'s registered handle.', 'wp-graphql-enqueue'),
       ],
       'src' => [
         'type' => 'String',
-        'description' => __('Source URL', 'wp-graphql-enqueue'),
+        'description' => __('The source of the enqueued style.', 'wp-graphql-enqueue'),
       ],
       'id' => [
         'type' => 'ID',
-        'description' => __('Something v special', 'wp-graphql-enqueue'),
+        'description' => __('The ID of the enqueued style.', 'wp-graphql-enqueue'),
         'resolve' => function ($style) {
           return $style['handle'];
         }
@@ -59,24 +59,5 @@ function register_enqueue()
     // 'resolveNode' => function ($node) {
     //   wp_send_json($node);
     // }
-  ]);
-}
-
-add_action('graphql_register_types', 'register_dog_field');
-
-function register_dog_field()
-{
-
-  register_graphql_field('RootQuery', 'enqueueScripts', [
-    'description' => __('Get a dog', 'wp-graphql-enqueue'),
-    'type' => 'Dog',
-    'resolve' => function () {
-
-      return [
-        'name' => 'Sparky',
-        'breed' => 'Golden Retriever',
-        'age' => 8
-      ];
-    }
   ]);
 }
