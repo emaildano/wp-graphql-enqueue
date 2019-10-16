@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Automatically add Enqueued Scripts and Styles to WPGraphQL
  *
@@ -7,7 +8,7 @@
  * @package WPGraphQL_Enqueue
  *
  * @wordpress-plugin
- * Plugin Name:       WPGraphQL for Scripts and Styles
+ * Plugin Name:       WPGraphQL for WordPress Scripts and Styles
  * Plugin URI:        https://github.com/emaildano/wp-graphql-enqueue
  * Description:       Automatically add Enqueued Scripts and Styles to WPGraphQL
  * Version:           0.1.0
@@ -19,47 +20,63 @@
  * Domain Path:       /languages
  */
 
-add_action( 'graphql_register_types', 'register_dog_type' );
+add_action('graphql_register_types', 'register_enqueue');
 
-function register_dog_type() {
-    register_graphql_object_type( 'Dog', [
-      'description' => __( "Man's best friend", 'wp-graphql-enqueue' ),
-      'fields' => [
-        'name' => [
-            'type' => 'String',
-            'description' => __( 'The name of the dog', 'wp-graphql-enqueue' ),
-        ],
-        'breed' => [
-            'type' => 'String',
-            'description' => __( 'The Breed of the dog', 'wp-graphql-enqueue' ),
-        ],
-        'age' => [
-            'type' => 'Integer',
-            'description' => __( 'The age, in years, of the dog', 'wp-graphql-enqueue' ),
-        ],
+function register_enqueue()
+{
+
+  require('class-style-connection.php');
+
+  register_graphql_object_type('EnqueuedStyle', [
+    'description' => __("Man's best friend", 'wp-graphql-enqueue'),
+    'fields' => [
+      'handle' => [
+        'type' => 'String',
+        'description' => __('Handle name', 'wp-graphql-enqueue'),
       ],
-    ] );
+      'src' => [
+        'type' => 'String',
+        'description' => __('Source URL', 'wp-graphql-enqueue'),
+      ],
+      'id' => [
+        'type' => 'ID',
+        'description' => __('Something v special', 'wp-graphql-enqueue'),
+        'resolve' => function ($style) {
+          return $style['handle'];
+        }
+      ],
+    ],
+  ]);
+
+  register_graphql_connection([
+    'fromType' => 'RootQuery',
+    'toType' => 'EnqueuedStyle',
+    'fromFieldName' => 'styles',
+    'resolve' => function ($source, $args, $context, $info) {
+      $resolver = new StyleConnectionResolver($source, $args, $context, $info);
+      return $resolver->get_connection();
+    },
+    // 'resolveNode' => function ($node) {
+    //   wp_send_json($node);
+    // }
+  ]);
 }
 
-add_action( 'graphql_register_types', 'register_dog_field' );
+add_action('graphql_register_types', 'register_dog_field');
 
-function register_dog_field() {
+function register_dog_field()
+{
 
-    register_graphql_field( 'RootQuery', 'enqueueScripts', [
-      'description' => __( 'Get a dog', 'wp-graphql-enqueue' ),
-      'type' => 'Dog',
-      'resolve' => function() {
+  register_graphql_field('RootQuery', 'enqueueScripts', [
+    'description' => __('Get a dog', 'wp-graphql-enqueue'),
+    'type' => 'Dog',
+    'resolve' => function () {
 
-        // Here you need to return data that matches the shape of the "Dog" type. You could get
-        // the data from the WP Database, an external API, or static values. For example sake,
-        // we will just return a hard-coded array.
-        return [
-            'name' => 'Sparky',
-            'breed' => 'Golden Retriever',
-            'age' => 8
-        ];
-
-      }
-    ] );
-
+      return [
+        'name' => 'Sparky',
+        'breed' => 'Golden Retriever',
+        'age' => 8
+      ];
+    }
+  ]);
 }
