@@ -4,7 +4,7 @@ Automatically add Enqueued Scripts and Styles to WPGraphQL
 
 ## Requirements
 
-- [WPGraphQL](https://google.com)
+- [WPGraphQL](https://www.wpgraphql.com/)
 - [Pretty Permalinks](https://wordpress.org/support/article/using-permalinks/#mod_rewrite-pretty-permalinks) Enabled
 
 ### Example Usage
