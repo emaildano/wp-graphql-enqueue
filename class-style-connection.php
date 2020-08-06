@@ -30,4 +30,28 @@ class StyleConnectionResolver extends WPGraphQL\Data\Connection\AbstractConnecti
   {
     return true;
   }
+
+  public function get_loader_name()
+  {
+    return 'plugin';
+  }
+
+  public function get_ids(){
+    $ids     = [];
+		$queried = $this->get_query();
+
+		if ( empty( $queried ) ) {
+			return $ids;
+		}
+
+		foreach ( $queried as $key => $item ) {
+			$ids[ $key ] = $item;
+		}
+
+		return $ids;
+  }
+
+  public function is_valid_offset( $offset ){
+    return true;
+  }
 }
