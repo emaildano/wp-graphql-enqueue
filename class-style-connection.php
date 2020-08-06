@@ -1,6 +1,6 @@
 <?php
 
-class StyleConnectionResolver extends WPGraphQL\Data\Connection\AbstractConnectionResolver
+abstract class StyleConnectionResolver extends WPGraphQL\Data\Connection\AbstractConnectionResolver
 {
 
   public function get_items()
